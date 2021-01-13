@@ -5,6 +5,7 @@ const app = new Vue({
         page: 'login',
         baseUrl: 'http://localhost:3000',
         organisationsData: [],
+        showModalOrganisation: false,
         user: {
             email: '',
             password: ''
@@ -14,6 +15,10 @@ const app = new Vue({
             firstName: '',
             lastName: '',
             password: ''
+        },
+        createOrganisation: {
+            id: '',
+            name: ''
         }
     },
     methods: {
@@ -85,9 +90,7 @@ const app = new Vue({
                     access_token: localStorage.access_token
                 }
             }).then(({ data }) => {
-                console.log(data);
                 this.organisationsData = data.data
-                console.log(data);
             }).catch(({ response }) => {
                 toastr.error(response.data.message, 'Error Alert!');
             })
@@ -95,19 +98,82 @@ const app = new Vue({
         detailOrganisation(id) {
             console.log(id);
         },
-        deleteOrganisation(id) {
+        saveOrupdateOrganisation(id) {
+            let method, url;
+            if (!id) {
+                method = 'POST'
+                url = `${this.baseUrl}/organisations`
+            } else {
+                method = 'PUT'
+                url = `${this.baseUrl}/organisations/${id}`
+            }
+
             axios({
-                method: 'DELETE',
-                url: `${this.baseUrl}/organisations/${id}`,
+                method: method,
+                url: url,
+                data: {
+                    name: this.createOrganisation.name
+                },
                 headers: {
                     access_token: localStorage.access_token
                 }
             }).then(({ data }) => {
                 this.changePage('organisation');
                 this.fetchOrganisation();
-                toastr.sucess(message, 'Success Alert!');
+                this.showModalOrganisation = false;
+                this.createOrganisation.name = ''
+                this.createOrganisation.id = ''
+                if (method === 'POST') {
+                    toastr.success('successfully add new organisation', 'Success Alert');
+                } else {
+                    toastr.success('updated organisation successfully', 'Success Alert');
+                }
             }).catch(({ response }) => {
-                toastr.error(response.data.message, 'Error Alert!');
+                response.data.message.map(el => {
+                    return toastr.warning(el, 'Warning Alert!');
+                })
+            })
+        },
+        editOrganisation(id) {
+            axios({
+                method: 'GET',
+                url: `${this.baseUrl}/organisations/${id}`,
+                headers: {
+                    access_token: localStorage.access_token
+                }
+            }).then(({ data }) => {
+                this.createOrganisation.id = data.data.id
+                this.createOrganisation.name = data.data.name
+                this.showModalOrganisation = true;
+            }).catch(({ response }) => {
+                return toastr.warning(response.data.message, 'Warning Alert!');
+            })
+        },
+        deleteOrganisation(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    axios({
+                        method: 'DELETE',
+                        url: `${this.baseUrl}/organisations/${id}`,
+                        headers: {
+                            access_token: localStorage.access_token
+                        }
+                    }).then(({ data }) => {
+                        this.changePage('organisation');
+                        this.fetchOrganisation();
+                        toastr.success(data.message, 'Success Alert!');
+                    }).catch(({ response }) => {
+                        toastr.error(response.data.message, 'Error Alert!');
+                    })
+                }
             })
         }
 

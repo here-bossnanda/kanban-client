@@ -34,7 +34,41 @@
         <div v-if="page === 'home'" class="task-wrapper " id="task-section ">
             <div class="heading ">
                 <h2>Welcome to home</h2>
+
             </div>
+        </div>
+
+        <!-- MODAL ADD ORGANISATION -->
+        <div v-if="showModalOrganisation">
+            <transition name="modal">
+                <div class="modal-mask">
+                    <div class="modal-wrapper">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add Organisation</h5>
+                                    <button type="button" @click="showModalOrganisation = false" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <input v-model="createOrganisation.id" type="text" style="display: none;">
+                                        <div class="input-field">
+                                            <i class="fas fa-school"></i>
+                                            <input v-model="createOrganisation.name" type="text" placeholder="Name">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" @click="showModalOrganisation = false">Close</button>
+                                    <button type="button" class="btn btn-success" @click="saveOrupdateOrganisation(createOrganisation.id)" class="btn btn-primary"> <i class="fa fa-save"></i> Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition>
         </div>
 
         <!-- Login -->
@@ -52,7 +86,7 @@
                                 <i class="fas fa-lock"></i>
                                 <input v-model="user.password" type="password" placeholder="Password">
                             </div>
-                            <input type="submit" value="Sign in" class="btn solid">
+                            <input type="submit" value="Sign in" class="btn-auth solid">
 
                             <p class="social-text">Or Sign in with social platforms</p>
                             <div class="social-media">
@@ -84,7 +118,7 @@
                                 <i class="fas fa-lock"></i>
                                 <input v-model="createUser.password" type="password" placeholder="Password">
                             </div>
-                            <input type="submit" value="Sign Up" class="btn solid">
+                            <input type="submit" value="Sign Up" class="btn-auth solid">
 
                             <p class="social-text">Or Sign in with social platforms</p>
                             <div class="social-media">
@@ -103,7 +137,7 @@
                             <h3>New Here ? </h3>
                             <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem possimus, cumque distinctio suscipit officiis alias modi perspiciatis harum, quasi explicabo provident aspernatur dolorum facilis eveniet iure reiciendis? Quo,
                                 totam officiis. </p>
-                            <button class="btn transparent" onclick="signUp()">Sign Up</button>
+                            <button class="btn-auth transparent" onclick="signUp()">Sign Up</button>
                         </div>
 
                         <img src="assets/login.svg" alt="" class="image">
@@ -114,7 +148,7 @@
                             <h3>One of us ? </h3>
                             <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem possimus, cumque distinctio suscipit officiis alias modi perspiciatis harum, quasi explicabo provident aspernatur dolorum facilis eveniet iure reiciendis? Quo,
                                 totam officiis. </p>
-                            <button class="btn transparent" onclick="signIn()">Sign In</button>
+                            <button class="btn-auth transparent" onclick="signIn()">Sign In</button>
                         </div>
 
                         <img src="assets/register.svg" class="image">
@@ -131,7 +165,7 @@
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <a type="button" class="btn-add  btn-info float-right" href="javascript:void(0)"> <i class="fa fa-plus"></i> Add </a>
+                        <a type="button" class="btn  btn-info float-right" @click="showModalOrganisation = true" href="javascript:void(0)"> <i class="fa fa-plus"></i> Add </a>
                     </div>
                     <div class="card-body ">
                         <div class="band ">
@@ -145,13 +179,14 @@
                                         </article>
                                     </a>
                                     <div class="row">
-                                        <button type="button" class="btn-action-edit btn-warning"><i class="fa fa-pencil-alt"></i> edit</button>
-                                        <button type="button" @click="deleteOrganisation(data.id)" class="btn-action-delete btn-danger"><i class="fa fa-trash-alt"></i> delete</button>
+                                        <div class="btn-group" role="group" aria-label="Basic example" style="margin: 10px 50px;">
+                                            <button type="button" @click="editOrganisation(data.id)" class="btn btn-sm btn-warning"><i class="fa fa-pencil-alt"></i> Edit</button>
+                                            <button type="button" @click="deleteOrganisation(data.id)" style="margin-left: 5px;" class="btn btn-sm btn-danger"><i class="fa fa-trash-alt"></i> Delete</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

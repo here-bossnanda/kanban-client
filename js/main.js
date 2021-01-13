@@ -262,6 +262,22 @@ const app = new Vue({
                 }
             })
         },
+        updateCategory(id, categoryId) {
+            axios({
+                method: 'PATCH',
+                url: `${this.baseUrl}/tasks/${id}`,
+                data: {
+                    categoryId
+                },
+                headers: {
+                    access_token: localStorage.access_token
+                }
+            }).then(({ data }) => {
+                this.detailOrganisation(this.detailIdOrganisation)
+            }).catch(({ response }) => {
+                toastr.error(response.data.message, 'Error Alert!');
+            })
+        },
         editTask(id) {
             axios({
                 method: 'GET',

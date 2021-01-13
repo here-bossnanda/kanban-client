@@ -37,8 +37,6 @@
             </div>
         </div>
 
-
-
         <!-- Login -->
         <div v-if="page === 'login'">
             <div class="container-auth">
@@ -187,8 +185,17 @@
                                     <div class="float-right">
                                         <a href="javascript:void(0)" @click="destroyTask(backlogs.id)" class="btn btn-sm btn-danger text-right"> <i class="fa fa-trash"></i> </a>
                                         <a href="javascript:void(0)" @click="editTask(backlogs.id)" class="btn btn-sm btn-warning text-right"> <i class="fa fa-pencil-alt"></i> </a>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-arrows-alt"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" @click="updateCategory(backlogs.id,2)" href="javascript:void(0)">Move to Todo</a>
+                                                <a class="dropdown-item" @click="updateCategory(backlogs.id,3)" href="javascript:void(0)">Move to Doing</a>
+                                                <a class="dropdown-item" @click="updateCategory(backlogs.id,4)" href="javascript:void(0)">Move to Done</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <br>
                                 </div>
                             </div>
                         </div>
@@ -212,6 +219,16 @@
                                     <div class="float-right">
                                         <a href="javascript:void(0)" @click="destroyTask(todos.id)" class="btn btn-sm btn-danger text-right"> <i class="fa fa-trash"></i> </a>
                                         <a href="javascript:void(0)" @click="editTask(todos.id)" class="btn btn-sm btn-warning text-right"> <i class="fa fa-pencil-alt"></i> </a>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-arrows-alt"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" @click="updateCategory(todos.id,1)" href="javascript:void(0)">Move to Backlog</a>
+                                                <a class="dropdown-item" @click="updateCategory(todos.id,3)" href="javascript:void(0)">Move to Doing</a>
+                                                <a class="dropdown-item" @click="updateCategory(todos.id,4)" href="javascript:void(0)">Move to Done</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -236,6 +253,16 @@
                                     <div class="float-right">
                                         <a href="javascript:void(0)" @click="destroyTask(doings.id)" class="btn btn-sm btn-danger text-right"> <i class="fa fa-trash"></i> </a>
                                         <a href="javascript:void(0)" @click="editTask(doings.id)" class="btn btn-sm btn-warning text-right"> <i class="fa fa-pencil-alt"></i> </a>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-arrows-alt"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" @click="updateCategory(doings.id,1)" href="javascript:void(0)">Move to Backlog</a>
+                                                <a class="dropdown-item" @click="updateCategory(doings.id,2)" href="javascript:void(0)">Move to Todo</a>
+                                                <a class="dropdown-item" @click="updateCategory(doings.id,4)" href="javascript:void(0)">Move to Done</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -260,6 +287,16 @@
                                     <div class="float-right">
                                         <a href="javascript:void(0)" @click="destroyTask(dones.id)" class="btn btn-sm btn-danger text-right"> <i class="fa fa-trash"></i> </a>
                                         <a href="javascript:void(0)" @click="editTask(dones.id)" class="btn btn-sm btn-warning text-right"> <i class="fa fa-pencil-alt"></i> </a>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-arrows-alt"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" @click="updateCategory(dones.id,1)" href="javascript:void(0)">Move to Backlog</a>
+                                                <a class="dropdown-item" @click="updateCategory(dones.id,2)" href="javascript:void(0)">Move to Todo</a>
+                                                <a class="dropdown-item" @click="updateCategory(dones.id,3)" href="javascript:void(0)">Move to Doing</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -346,7 +383,9 @@
 
     <script src="https://apis.google.com/js/platform.js " async defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js "></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js " integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl " crossorigin="anonymous "></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js " crossorigin="anonymous "></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10 "></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js "></script>

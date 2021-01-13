@@ -7,6 +7,12 @@ const app = new Vue({
         user: {
             email: '',
             password: ''
+        },
+        createUser: {
+            email: '',
+            firstName: '',
+            lastName: '',
+            password: ''
         }
     },
     methods: {
@@ -42,6 +48,35 @@ const app = new Vue({
                     this.user.email = '';
                     this.user.password = '';
                     toastr.error(err.response.data.message, 'Error Alert!');
+                })
+        },
+        register() {
+            axios({
+                    method: 'post',
+                    url: `${this.baseUrl}/register`,
+                    data: {
+                        email: this.createUser.email,
+                        firstName: this.createUser.firstName,
+                        lastName: this.createUser.lastName,
+                        password: this.createUser.password,
+                    }
+                }).then(data => {
+                    this.createUser.email = '';
+                    this.createUser.firstName = '';
+                    this.createUser.lastName = '';
+                    this.createUser.password = '';
+                    toastr.success('successfully register new user, please login', 'Success Alert!');
+                    $('.container-auth').removeClass("sign-up-mode");
+                })
+                .catch(err => {
+                    this.createUser.email = '';
+                    this.createUser.firstName = '';
+                    this.createUser.lastName = '';
+                    this.createUser.password = '';
+
+                    err.response.data.message.map(el => {
+                        return toastr.warning(el, 'Warning Alert!');
+                    })
                 })
         }
     },

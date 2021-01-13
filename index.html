@@ -7,12 +7,13 @@
     <title>Kanban App</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <div id="app">
-        <navbar v-show="page !== 'login'">
+        <div id="navbar" v-show="page !== 'login'">
             <div class="container">
                 <div class="navbar-left">
                     <img class="logo" src="assets/logo.png">
@@ -25,7 +26,7 @@
                     <a href="javascript:void(0)" @click="logout() " class="login ">Logout</a>
                 </div>
             </div>
-        </navbar>
+        </div>
 
         <!-- Home -->
         <div v-if="page === 'home'" class="task-wrapper " id="task-section ">
@@ -36,32 +37,88 @@
 
         <!-- Login -->
         <div v-if="page === 'login'">
-            <div class="container">
-                <div class="card text-center" style=" position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%)">
-                    <div class="card-header">
-                        Featured
-                    </div>
-                    <div class="card-body">
-                        <form @submit.prevent="login">
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                <input type="email" v-model="user.email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <div class="container-auth">
+                <div class="forms-container">
+                    <div class="signin-signup">
+                        <form @submit.prevent="login()" class="sign-in-form">
+                            <h2 class="title">Sign in</h2>
+                            <div class="input-field">
+                                <i class="fas fa-envelope"></i>
+                                <input v-model="user.email" type="text" placeholder="Email">
                             </div>
-                            <div class="mb-3">
-                                <label for="exampleInputPassword1" class="form-label">Password</label>
-                                <input v-model="user.password" type="password" class="form-control" id="exampleInputPassword1">
+                            <div class="input-field">
+                                <i class="fas fa-lock"></i>
+                                <input v-model="user.password" type="password" placeholder="Password">
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <input type="submit" value="Sign in" class="btn solid">
+
+                            <p class="social-text">Or Sign in with social platforms</p>
+                            <div class="social-media">
+                                <a href="#" class="social-icon"> <i class="fab fa-facebook-f"></i> </a>
+                                <a href="#" class="social-icon"> <i class="fab fa-twitter"></i> </a>
+                                <a href="#" class="social-icon"> <i class="fab fa-google"></i> </a>
+                                <a href="#" class="social-icon"> <i class="fab fa-linkedin-in"></i> </a>
+                            </div>
+                        </form>
+
+                        <form @submit.prevent="register()" class="sign-up-form">
+                            <h2 class="title">Sign Up</h2>
+                            <div class="input-field">
+                                <i class="fas fa-envelope"></i>
+                                <input v-model="createUser.email" type="text" placeholder="Email">
+                            </div>
+
+                            <div class="input-field">
+                                <i class="fas fa-user"></i>
+                                <input v-model="createUser.firstName" type="text" placeholder="First Name">
+                            </div>
+
+                            <div class="input-field">
+                                <i class="fas fa-user"></i>
+                                <input v-model="createUser.lastName" type="text" placeholder="Last Name">
+                            </div>
+
+                            <div class="input-field">
+                                <i class="fas fa-lock"></i>
+                                <input v-model="createUser.password" type="password" placeholder="Password">
+                            </div>
+                            <input type="submit" value="Sign Up" class="btn solid">
+
+                            <p class="social-text">Or Sign in with social platforms</p>
+                            <div class="social-media">
+                                <a href="#" class="social-icon"> <i class="fab fa-facebook-f"></i> </a>
+                                <a href="#" class="social-icon"> <i class="fab fa-twitter"></i> </a>
+                                <a href="#" class="social-icon"> <i class="fab fa-google"></i> </a>
+                                <a href="#" class="social-icon"> <i class="fab fa-linkedin-in"></i> </a>
+                            </div>
                         </form>
                     </div>
                 </div>
 
-            </div>
+                <div class="panels-container">
+                    <div class="panel left-panel">
+                        <div class="content">
+                            <h3>New Here ? </h3>
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem possimus, cumque distinctio suscipit officiis alias modi perspiciatis harum, quasi explicabo provident aspernatur dolorum facilis eveniet iure reiciendis? Quo,
+                                totam officiis. </p>
+                            <button class="btn transparent" id="sign-up-btn">Sign Up</button>
+                        </div>
 
+                        <img src="assets/login.svg" alt="" class="image">
+                    </div>
+
+                    <div class="panel right-panel">
+                        <div class="content">
+                            <h3>One of us ? </h3>
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem possimus, cumque distinctio suscipit officiis alias modi perspiciatis harum, quasi explicabo provident aspernatur dolorum facilis eveniet iure reiciendis? Quo,
+                                totam officiis. </p>
+                            <button class="btn transparent" id="sign-in-btn">Sign In</button>
+                        </div>
+
+                        <img src="assets/register.svg" class="image">
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Task -->
@@ -91,7 +148,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js "></script>
-    <script src="main.js "></script>
+    <script src="js/main.js "></script>
+    <script src="js/style.js "></script>
+
 </body>
 
 </html>

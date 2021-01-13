@@ -30,6 +30,30 @@ important .container-auth {
     height: 70px;
 }
 
+.container-task {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.card-task-flex {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.card-task {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: scroll;
+    height: 70px;
+    padding: 10px;
+}
+
 .forms-container {
     position: absolute;
     width: 100%;
@@ -408,6 +432,20 @@ form.sign-up-form {
 .card {
     margin: 1rem;
     display: flex;
+}
+
+.card-title {
+    font-size: 13px;
+}
+
+.card-text {
+    font-size: 12px;
+}
+
+.card-text-small {
+    font-size: 10px;
+    text-align: left;
+    color: #999;
 }
 
 .card:hover {

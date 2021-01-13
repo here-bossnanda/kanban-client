@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="shortcut icon" href="assets/logo.png" type="image/x-icon">
     <meta name="google-signin-client_id" content="550351084184-ivubue7e92475627iqn7sj32urnp9l7s.apps.googleusercontent.com">
-
 </head>
 
 <body>
@@ -32,7 +31,7 @@
         </div>
 
         <!-- Home -->
-        <div v-if="page === 'home'" class="task-wrapper " id="task-section ">
+        <div v-if="page === 'home'" class="task-wrapper">
             <div class="heading ">
                 <h2 v-html="welcomeName"></h2>
             </div>
@@ -170,6 +169,144 @@
                     <h6 v-text="taskDetailOwner"></h6>
                 </div>
             </div>
+            <div class="container-task">
+                <div class="card-task-flex">
+                    <div class="card bg-light mb-3 border-primary" style="max-width: 21.5rem;">
+                        <div class="card-header bg-primary text-white">Backlog</div>
+                        <div class="card-body">
+                            <div v-if="backlog.length === 0" class="card" style="width: 16rem;">
+                                <h6>no action exist</h6>
+                            </div>
+                            <div v-for="backlogs in backlog" class="card" style="width: 16rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{backlogs.name}}</h5>
+                                    <p class="card-text">{{backlogs.description}}</p>
+                                    <div style="margin-top: 20px;">
+                                        <p class="card-text-small" style="text-align: left;"> by: {{backlogs.user.email}}</p>
+                                    </div>
+                                    <div class="float-right">
+                                        <a href="javascript:void(0)" @click="destroyTask(backlogs.id)" class="btn btn-sm btn-danger text-right"> <i class="fa fa-trash"></i> </a>
+                                        <a href="javascript:void(0)" @click="editTask(backlogs.id)" class="btn btn-sm btn-warning text-right"> <i class="fa fa-pencil-alt"></i> </a>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-success">
+                            <button @click="showModalTask = true;detailIdTaskAdd = 1" class="btn btn-sm btn-secondary btn-block"> <i class="fa fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+                    <div class="card bg-light mb-3 border-warning" style="max-width: 21.5rem;">
+                        <div class="card-header bg-warning text-white">Todo</div>
+                        <div class="card-body">
+                            <div v-if="todo.length === 0" class="card" style="width: 16rem;">
+                                <h6>no action exist</h6>
+                            </div>
+                            <div v-for="todos in todo" class="card" style="width: 16rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{todos.name}}</h5>
+                                    <p class="card-text">{{todos.description}}</p>
+                                    <div style="margin-top: 20px;">
+                                        <p class="card-text-small" style="text-align: left;"> by: {{todos.user.email}}</p>
+                                    </div>
+                                    <div class="float-right">
+                                        <a href="javascript:void(0)" @click="destroyTask(todos.id)" class="btn btn-sm btn-danger text-right"> <i class="fa fa-trash"></i> </a>
+                                        <a href="javascript:void(0)" @click="editTask(todos.id)" class="btn btn-sm btn-warning text-right"> <i class="fa fa-pencil-alt"></i> </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-success">
+                            <button @click="showModalTask = true;detailIdTaskAdd = 2" class="btn btn-sm btn-secondary btn-block"> <i class="fa fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+                    <div class="card bg-light mb-3 border-info" style="max-width: 21.5rem;">
+                        <div class="card-header bg-info text-white">Doing</div>
+                        <div class="card-body">
+                            <div v-if="doing.length === 0" class="card" style="width: 16rem;">
+                                <h6>no action exist</h6>
+                            </div>
+                            <div v-for="doings in doing" class="card" style="width: 16rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{doings.name}}</h5>
+                                    <p class="card-text">{{doings.description}}</p>
+                                    <div style="margin-top: 20px;">
+                                        <p class="card-text-small" style="text-align: left;"> by: {{doings.user.email}}</p>
+                                    </div>
+                                    <div class="float-right">
+                                        <a href="javascript:void(0)" @click="destroyTask(doings.id)" class="btn btn-sm btn-danger text-right"> <i class="fa fa-trash"></i> </a>
+                                        <a href="javascript:void(0)" @click="editTask(doings.id)" class="btn btn-sm btn-warning text-right"> <i class="fa fa-pencil-alt"></i> </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-success">
+                            <button @click="showModalTask = true;detailIdTaskAdd = 3" class="btn btn-sm btn-secondary btn-block"> <i class="fa fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+                    <div class="card  mb-3 border-success" style="max-width: 21.5rem;">
+                        <div class="card-header bg-success text-white">Done</div>
+                        <div class="card-body">
+                            <div v-if="done.length === 0" class="card" style="width: 16rem;">
+                                <h6>no action exist</h6>
+                            </div>
+                            <div v-for="dones in done" class="card" style="width: 16rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{dones.name}}</h5>
+                                    <p class="card-text">{{dones.description}}</p>
+                                    <div style="margin-top: 20px;">
+                                        <p class="card-text-small" style="text-align: left;"> by: {{dones.user.email}}</p>
+                                    </div>
+                                    <div class="float-right">
+                                        <a href="javascript:void(0)" @click="destroyTask(dones.id)" class="btn btn-sm btn-danger text-right"> <i class="fa fa-trash"></i> </a>
+                                        <a href="javascript:void(0)" @click="editTask(dones.id)" class="btn btn-sm btn-warning text-right"> <i class="fa fa-pencil-alt"></i> </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-success">
+                            <button @click="showModalTask = true;detailIdTaskAdd = 4" class="btn btn-sm btn-secondary btn-block"> <i class="fa fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL ADD TASK -->
+        <div v-if="showModalTask">
+            <transition name="modal">
+                <div class="modal-mask">
+                    <div class="modal-wrapper">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add Task</h5>
+                                    <button type="button" @click="showModalTask = false" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <input v-model="createTaskModel.id" type="text" style="display: none;">
+                                        <div class="input-field">
+                                            <i class="fas fa-school"></i>
+                                            <input v-model="createTaskModel.name" type="text" placeholder="Name">
+                                        </div>
+                                        <div class="input-field">
+                                            <i class="fas fa-school"></i>
+                                            <input v-model="createTaskModel.description" type="text" placeholder="Description">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" @click="showModalTask = false">Close</button>
+                                    <button type="button" class="btn btn-success" @click="saveOrupdateTask(createTaskModel.id)" class="btn btn-primary"> <i class="fa fa-save"></i> Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition>
         </div>
 
         <!-- MODAL ADD ORGANISATION -->
@@ -204,6 +341,7 @@
                 </div>
             </transition>
         </div>
+
     </div>
 
     <script src="https://apis.google.com/js/platform.js " async defer></script>

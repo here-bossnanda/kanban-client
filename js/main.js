@@ -8,6 +8,9 @@ const app = new Vue({
         organisationsData: [],
         detailOrganisationsData: [],
         showModalOrganisation: false,
+        showModalTask: false,
+        detailIdOrganisation: 0,
+        detailIdTaskAdd: 0,
         user: {
             email: '',
             password: ''
@@ -21,6 +24,10 @@ const app = new Vue({
         createOrganisation: {
             id: '',
             name: ''
+        },
+        createTaskModel: {
+            name: '',
+            description: ''
         },
         taskDetailTitle: '',
         taskDetailOwner: ''
@@ -111,9 +118,9 @@ const app = new Vue({
             }).then(({ data }) => {
                 this.changePage('task');
                 this.detailOrganisationsData = data.data;
+                this.detailIdOrganisation = data.data.id
                 this.taskDetailTitle = `${data.data.name} organisation`
                 this.taskDetailOwner = `owner: ${data.data.owner.firstName} ${data.data.owner.lastName}`
-
             }).catch(({ response }) => {
                 toastr.error(response.data.message, 'Error Alert!');
             })
@@ -129,8 +136,8 @@ const app = new Vue({
             }
 
             axios({
-                method: method,
-                url: url,
+                method,
+                url,
                 data: {
                     name: this.createOrganisation.name
                 },
@@ -196,6 +203,100 @@ const app = new Vue({
                     }).then(({ data }) => {
                         this.changePage('organisation');
                         this.fetchOrganisation();
+                        toastr.success(data.message, 'Success Alert!');
+                    }).catch(({ response }) => {
+                        toastr.error(response.data.message, 'Error Alert!');
+                    })
+                }
+            })
+        },
+        saveOrupdateTask(id) {
+            let method, url, data;
+            if (!id) {
+                method = 'POST';
+                url = `${this.baseUrl}/tasks`;
+                data = {
+                    name: this.createTaskModel.name,
+                    description: this.createTaskModel.description,
+                    organisationId: this.detailIdOrganisation,
+                    categoryId: this.detailIdTaskAdd
+                }
+            } else {
+                method = 'PUT';
+                url = `${this.baseUrl}/tasks/${id}`;
+                data = {
+                    name: this.createTaskModel.name,
+                    description: this.createTaskModel.description
+                }
+            }
+
+            axios({
+                method,
+                url,
+                data,
+                headers: {
+                    access_token: localStorage.access_token
+                }
+            }).then(({ data }) => {
+                this.detailOrganisation(this.detailIdOrganisation)
+                this.showModalTask = false;
+                this.createTaskModel.name = ''
+                this.createTaskModel.id = ''
+                this.createTaskModel.description = ''
+                if (method === 'POST') {
+                    toastr.success('successfully add new task', 'Success Alert');
+                } else {
+                    toastr.success('updated task successfully', 'Success Alert');
+                }
+            }).catch(({ response }) => {
+                if (response.data.length > 0) {
+                    response.data.message.map(el => {
+                        return toastr.warning(el, 'Warning Alert!');
+                    })
+                } else {
+                    toastr.error(response.data.message, 'Error Alert!');
+                    this.showModalTask = false;
+                    this.createTaskModel.name = ''
+                    this.createTaskModel.id = ''
+                    this.createTaskModel.description = ''
+                }
+            })
+        },
+        editTask(id) {
+            axios({
+                method: 'GET',
+                url: `${this.baseUrl}/tasks/${id}`,
+                headers: {
+                    access_token: localStorage.access_token
+                }
+            }).then(({ data }) => {
+                this.createTaskModel.id = data.data.id
+                this.createTaskModel.name = data.data.name
+                this.createTaskModel.description = data.data.description
+                this.showModalTask = true;
+            }).catch(({ response }) => {
+                toastr.warning(response.data.message, 'Warning Alert!');
+            })
+        },
+        destroyTask(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    axios({
+                        method: 'DELETE',
+                        url: `${this.baseUrl}/tasks/${id}`,
+                        headers: {
+                            access_token: localStorage.access_token
+                        }
+                    }).then(({ data }) => {
+                        this.detailOrganisation(this.detailIdOrganisation)
                         toastr.success(data.message, 'Success Alert!');
                     }).catch(({ response }) => {
                         toastr.error(response.data.message, 'Error Alert!');

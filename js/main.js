@@ -4,7 +4,9 @@ const app = new Vue({
         message: 'hello world',
         page: 'login',
         baseUrl: 'http://localhost:3000',
+        welcomeName: '',
         organisationsData: [],
+        detailOrganisationsData: [],
         showModalOrganisation: false,
         user: {
             email: '',
@@ -19,13 +21,16 @@ const app = new Vue({
         createOrganisation: {
             id: '',
             name: ''
-        }
+        },
+        taskDetailTitle: '',
+        taskDetailOwner: ''
     },
     methods: {
         checkAuth() {
             if (localStorage.access_token) {
                 this.fetchOrganisation()
                 this.changePage('home');
+                this.welcomeName = `Welcome </br> ${localStorage.fullname}`
             } else {
                 this.changePage('login');
             }
@@ -48,6 +53,7 @@ const app = new Vue({
                     }
                 }).then(({ data }) => {
                     localStorage.setItem('access_token', data.access_token);
+                    localStorage.setItem('fullname', data.fullname);
                     this.user.email = '';
                     this.user.password = '';
                     this.checkAuth();
@@ -96,7 +102,21 @@ const app = new Vue({
             })
         },
         detailOrganisation(id) {
-            console.log(id);
+            axios({
+                method: 'GET',
+                url: `${this.baseUrl}/organisations/${id}`,
+                headers: {
+                    access_token: localStorage.access_token
+                }
+            }).then(({ data }) => {
+                this.changePage('task');
+                this.detailOrganisationsData = data.data;
+                this.taskDetailTitle = `${data.data.name} organisation`
+                this.taskDetailOwner = `owner: ${data.data.owner.firstName} ${data.data.owner.lastName}`
+
+            }).catch(({ response }) => {
+                toastr.error(response.data.message, 'Error Alert!');
+            })
         },
         saveOrupdateOrganisation(id) {
             let method, url;
@@ -129,9 +149,16 @@ const app = new Vue({
                     toastr.success('updated organisation successfully', 'Success Alert');
                 }
             }).catch(({ response }) => {
-                response.data.message.map(el => {
-                    return toastr.warning(el, 'Warning Alert!');
-                })
+                if (response.data.length > 0) {
+                    response.data.message.map(el => {
+                        return toastr.warning(el, 'Warning Alert!');
+                    })
+                } else {
+                    toastr.error(response.data.message, 'Error Alert!');
+                    this.showModalOrganisation = false;
+                    this.createOrganisation.name = ''
+                    this.createOrganisation.id = ''
+                }
             })
         },
         editOrganisation(id) {
@@ -146,7 +173,7 @@ const app = new Vue({
                 this.createOrganisation.name = data.data.name
                 this.showModalOrganisation = true;
             }).catch(({ response }) => {
-                return toastr.warning(response.data.message, 'Warning Alert!');
+                toastr.warning(response.data.message, 'Warning Alert!');
             })
         },
         deleteOrganisation(id) {
@@ -180,5 +207,19 @@ const app = new Vue({
     },
     created() {
         this.checkAuth()
+    },
+    computed: {
+        backlog() {
+            return this.detailOrganisationsData.task.filter(el => el.category.name === "backlog");
+        },
+        todo() {
+            return this.detailOrganisationsData.task.filter(el => el.category.name === "todo");
+        },
+        doing() {
+            return this.detailOrganisationsData.task.filter(el => el.category.name === "doing");
+        },
+        done() {
+            return this.detailOrganisationsData.task.filter(el => el.category.name === "done");
+        }
     }
 });

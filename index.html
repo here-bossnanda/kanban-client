@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="assets/logo.png" type="image/x-icon">
     <meta name="google-signin-client_id" content="550351084184-ivubue7e92475627iqn7sj32urnp9l7s.apps.googleusercontent.com">
 
 </head>
@@ -33,43 +34,11 @@
         <!-- Home -->
         <div v-if="page === 'home'" class="task-wrapper " id="task-section ">
             <div class="heading ">
-                <h2>Welcome to home</h2>
-
+                <h2 v-html="welcomeName"></h2>
             </div>
         </div>
 
-        <!-- MODAL ADD ORGANISATION -->
-        <div v-if="showModalOrganisation">
-            <transition name="modal">
-                <div class="modal-mask">
-                    <div class="modal-wrapper">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Add Organisation</h5>
-                                    <button type="button" @click="showModalOrganisation = false" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <input v-model="createOrganisation.id" type="text" style="display: none;">
-                                        <div class="input-field">
-                                            <i class="fas fa-school"></i>
-                                            <input v-model="createOrganisation.name" type="text" placeholder="Name">
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" @click="showModalOrganisation = false">Close</button>
-                                    <button type="button" class="btn btn-success" @click="saveOrupdateOrganisation(createOrganisation.id)" class="btn btn-primary"> <i class="fa fa-save"></i> Save</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </transition>
-        </div>
+
 
         <!-- Login -->
         <div v-if="page === 'login'">
@@ -135,8 +104,7 @@
                     <div class="panel left-panel">
                         <div class="content">
                             <h3>New Here ? </h3>
-                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem possimus, cumque distinctio suscipit officiis alias modi perspiciatis harum, quasi explicabo provident aspernatur dolorum facilis eveniet iure reiciendis? Quo,
-                                totam officiis. </p>
+                            <p> don't have account, create new account. </p>
                             <button class="btn-auth transparent" onclick="signUp()">Sign Up</button>
                         </div>
 
@@ -146,8 +114,7 @@
                     <div class="panel right-panel">
                         <div class="content">
                             <h3>One of us ? </h3>
-                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem possimus, cumque distinctio suscipit officiis alias modi perspiciatis harum, quasi explicabo provident aspernatur dolorum facilis eveniet iure reiciendis? Quo,
-                                totam officiis. </p>
+                            <p> Already have accont. </p>
                             <button class="btn-auth transparent" onclick="signIn()">Sign In</button>
                         </div>
 
@@ -157,7 +124,7 @@
             </div>
         </div>
 
-        <!-- Task -->
+        <!-- ORGANISATION -->
         <div v-else-if="page === 'organisation'" class="task-wrapper " id="task-section ">
             <div class="container">
                 <div class="heading">
@@ -168,6 +135,10 @@
                         <a type="button" class="btn  btn-info float-right" @click="showModalOrganisation = true" href="javascript:void(0)"> <i class="fa fa-plus"></i> Add </a>
                     </div>
                     <div class="card-body ">
+                        <div v-if="organisationsData.length === 0">
+                            <h6>no organisation exist</h6>
+                        </div>
+
                         <div class="band ">
                             <div v-for="data in organisationsData " :key="data.id ">
                                 <div class="card">
@@ -192,7 +163,47 @@
             </div>
         </div>
 
+        <div v-else-if="page === 'task'" class="task-wrapper " id="task-section ">
+            <div class="container">
+                <div class="heading">
+                    <h2 v-text="taskDetailTitle"></h2>
+                    <h6 v-text="taskDetailOwner"></h6>
+                </div>
+            </div>
+        </div>
 
+        <!-- MODAL ADD ORGANISATION -->
+        <div v-if="showModalOrganisation">
+            <transition name="modal">
+                <div class="modal-mask">
+                    <div class="modal-wrapper">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add Organisation</h5>
+                                    <button type="button" @click="showModalOrganisation = false" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <input v-model="createOrganisation.id" type="text" style="display: none;">
+                                        <div class="input-field">
+                                            <i class="fas fa-school"></i>
+                                            <input v-model="createOrganisation.name" type="text" placeholder="Name">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" @click="showModalOrganisation = false">Close</button>
+                                    <button type="button" class="btn btn-success" @click="saveOrupdateOrganisation(createOrganisation.id)" class="btn btn-primary"> <i class="fa fa-save"></i> Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+        </div>
     </div>
 
     <script src="https://apis.google.com/js/platform.js " async defer></script>

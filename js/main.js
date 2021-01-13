@@ -4,6 +4,7 @@ const app = new Vue({
         message: 'hello world',
         page: 'login',
         baseUrl: 'http://localhost:3000',
+        organisationsData: [],
         user: {
             email: '',
             password: ''
@@ -18,6 +19,7 @@ const app = new Vue({
     methods: {
         checkAuth() {
             if (localStorage.access_token) {
+                this.fetchOrganisation()
                 this.changePage('home');
             } else {
                 this.changePage('login');
@@ -28,6 +30,7 @@ const app = new Vue({
         },
         logout() {
             localStorage.clear();
+            this.organisationsData = []
             this.checkAuth();
         },
         login() {
@@ -38,21 +41,21 @@ const app = new Vue({
                         email: this.user.email,
                         password: this.user.password,
                     }
-                }).then(data => {
-                    localStorage.setItem('access_token', data.data.access_token);
+                }).then(({ data }) => {
+                    localStorage.setItem('access_token', data.access_token);
                     this.user.email = '';
                     this.user.password = '';
-                    this.changePage('home');
+                    this.checkAuth();
                 })
-                .catch(err => {
+                .catch(({ response }) => {
                     this.user.email = '';
                     this.user.password = '';
-                    toastr.error(err.response.data.message, 'Error Alert!');
+                    toastr.error(response.data.message, 'Error Alert!');
                 })
         },
         register() {
             axios({
-                    method: 'post',
+                    method: 'POST',
                     url: `${this.baseUrl}/register`,
                     data: {
                         email: this.createUser.email,
@@ -60,7 +63,7 @@ const app = new Vue({
                         lastName: this.createUser.lastName,
                         password: this.createUser.password,
                     }
-                }).then(data => {
+                }).then(({ data }) => {
                     this.createUser.email = '';
                     this.createUser.firstName = '';
                     this.createUser.lastName = '';
@@ -68,37 +71,48 @@ const app = new Vue({
                     toastr.success('successfully register new user, please login', 'Success Alert!');
                     $('.container-auth').removeClass("sign-up-mode");
                 })
-                .catch(err => {
-                    this.createUser.email = '';
-                    this.createUser.firstName = '';
-                    this.createUser.lastName = '';
-                    this.createUser.password = '';
-
-                    err.response.data.message.map(el => {
+                .catch(({ response }) => {
+                    response.data.message.map(el => {
                         return toastr.warning(el, 'Warning Alert!');
                     })
                 })
+        },
+        fetchOrganisation() {
+            axios({
+                method: 'GET',
+                url: `${this.baseUrl}/organisations`,
+                headers: {
+                    access_token: localStorage.access_token
+                }
+            }).then(({ data }) => {
+                console.log(data);
+                this.organisationsData = data.data
+                console.log(data);
+            }).catch(({ response }) => {
+                toastr.error(response.data.message, 'Error Alert!');
+            })
+        },
+        detailOrganisation(id) {
+            console.log(id);
+        },
+        deleteOrganisation(id) {
+            axios({
+                method: 'DELETE',
+                url: `${this.baseUrl}/organisations/${id}`,
+                headers: {
+                    access_token: localStorage.access_token
+                }
+            }).then(({ data }) => {
+                this.changePage('organisation');
+                this.fetchOrganisation();
+                toastr.sucess(message, 'Success Alert!');
+            }).catch(({ response }) => {
+                toastr.error(response.data.message, 'Error Alert!');
+            })
         }
+
     },
     created() {
         this.checkAuth()
     }
 });
-
-toastr.options = {
-    "closeButton": false,
-    "debug": false,
-    "newestOnTop": false,
-    "progressBar": true,
-    "positionClass": "toast-top-right",
-    "preventDuplicates": false,
-    "onclick": null,
-    "showDuration": "300",
-    "hideDuration": "1000",
-    "timeOut": "5000",
-    "extendedTimeOut": "1000",
-    "showEasing": "swing",
-    "hideEasing": "linear",
-    "showMethod": "fadeIn",
-    "hideMethod": "fadeOut"
-}

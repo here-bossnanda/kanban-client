@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <link rel="stylesheet" href="css/style.css">
+    <meta name="google-signin-client_id" content="550351084184-ivubue7e92475627iqn7sj32urnp9l7s.apps.googleusercontent.com">
+
 </head>
 
 <body>
@@ -21,9 +23,9 @@
 
                 <span class="fa fa-bars menu-icon" style="display: none;"></span>
                 <div class="navbar-right">
-                    <a href="javascript:void(0)" @click="changePage('home')">Home</a>
-                    <a href="javascript:void(0)" @click="changePage('task')">Organisation</a>
-                    <a href="javascript:void(0)" @click="logout() " class="login ">Logout</a>
+                    <a href="javascript:void(0)" @click="changePage('home')"><i class="fa fa-home"></i> Home</a>
+                    <a href="javascript:void(0)" @click="changePage('organisation')"><i class="fa fa-school"> </i> Organisation</a>
+                    <a href="javascript:void(0)" @click="logout()"><i class="fa fa-sign-out-alt"></i> Logout</a>
                 </div>
             </div>
         </div>
@@ -101,7 +103,7 @@
                             <h3>New Here ? </h3>
                             <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem possimus, cumque distinctio suscipit officiis alias modi perspiciatis harum, quasi explicabo provident aspernatur dolorum facilis eveniet iure reiciendis? Quo,
                                 totam officiis. </p>
-                            <button class="btn transparent" id="sign-up-btn">Sign Up</button>
+                            <button class="btn transparent" onclick="signUp()">Sign Up</button>
                         </div>
 
                         <img src="assets/login.svg" alt="" class="image">
@@ -112,7 +114,7 @@
                             <h3>One of us ? </h3>
                             <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem possimus, cumque distinctio suscipit officiis alias modi perspiciatis harum, quasi explicabo provident aspernatur dolorum facilis eveniet iure reiciendis? Quo,
                                 totam officiis. </p>
-                            <button class="btn transparent" id="sign-in-btn">Sign In</button>
+                            <button class="btn transparent" onclick="signIn()">Sign In</button>
                         </div>
 
                         <img src="assets/register.svg" class="image">
@@ -122,31 +124,48 @@
         </div>
 
         <!-- Task -->
-        <div v-else-if="page === 'task'" class="task-wrapper " id="task-section ">
-            <div class="container ">
-                <div class="heading ">
+        <div v-else-if="page === 'organisation'" class="task-wrapper " id="task-section ">
+            <div class="container">
+                <div class="heading">
                     <h2>Organisation</h2>
                 </div>
-                <ul class="flex-list ">
-                    <li class="li1 ">
-                    </li>
-                    <li class="li2 ">
-                    </li>
-                    <li class="li3 ">
-                    </li>
-                    <li class="li4 ">
-                    </li>
-                </ul>
+                <div class="card">
+                    <div class="card-header">
+                        <a type="button" class="btn-add  btn-info float-right" href="javascript:void(0)"> <i class="fa fa-plus"></i> Add </a>
+                    </div>
+                    <div class="card-body ">
+                        <div class="band ">
+                            <div v-for="data in organisationsData " :key="data.id ">
+                                <div class="card">
+                                    <a href="javascript:void(0) " @click="detailOrganisation(data.id) ">
+                                        <div class="thumb " style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/flex-1.jpg); "></div>
+                                        <article>
+                                            <h1>{{data.name}}</h1>
+                                            <span> owner: <br> {{data.owner.firstName}} {{data.owner.lastName}}</span>
+                                        </article>
+                                    </a>
+                                    <div class="row">
+                                        <button type="button" class="btn-action-edit btn-warning"><i class="fa fa-pencil-alt"></i> edit</button>
+                                        <button type="button" @click="deleteOrganisation(data.id)" class="btn-action-delete btn-danger"><i class="fa fa-trash-alt"></i> delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
 
+
     </div>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="https://apis.google.com/js/platform.js " async defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js " integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl " crossorigin="anonymous "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js " crossorigin="anonymous "></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10 "></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js "></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js "></script>
     <script src="js/main.js "></script>
     <script src="js/style.js "></script>

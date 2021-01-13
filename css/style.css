@@ -126,6 +126,47 @@ form.sign-up-form {
     font-weight: 500;
 }
 
+.btn-add {
+    width: 100px;
+    height: 29px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 49px;
+    background-color: #5995fd;
+    color: #fff;
+    text-transform: uppercase;
+    margin: 10px 0;
+    padding: 1px 0;
+    transition: .5s;
+}
+
+.btn-action-edit {
+    width: 80px;
+    float: left;
+    height: 29px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin: 10px 25px;
+    padding: 1px 0;
+    transition: .5s;
+}
+
+.btn-action-delete {
+    width: 80px;
+    float: left;
+    height: 29px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin: 10px 25px;
+    padding: 1px 0;
+    transition: .5s;
+}
+
 .btn {
     width: 150px;
     height: 49px;
@@ -281,7 +322,7 @@ form.sign-up-form {
     opacity: 1;
 }
 
-.navbar {
+#navbar {
     height: 65px;
     width: 100%;
     background: #4481eb;
@@ -295,25 +336,26 @@ form.sign-up-form {
     margin-top: 10px;
 }
 
-.navbar .navbar-left {
+.navbar-left {
     float: left;
 }
 
-.navbar .navbar-right {
+.navbar-right {
     float: right;
     margin-right: -25px;
 }
 
-.navbar .navbar-right a {
+.navbar-right a {
     line-height: 65px;
     padding: 0 25px;
     color: white;
     display: block;
     float: left;
     transition: all 0.5s;
+    text-decoration: none;
 }
 
-.navbar .navbar-right a:hover {
+.navbar-right a:hover {
     background-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -349,69 +391,62 @@ form.sign-up-form {
     text-align: center;
 }
 
-.task-wrapper li {
-    color: white;
-    height: 80px;
-    line-height: 80px;
-}
-
-.task-wrapper .li1 {
-    background-color: #ffc562;
+.task-wrapper .organisation {
     height: 300px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
 }
 
-.task-wrapper .li2 {
-    background-color: #a0c3f7;
-    height: 300px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.task-wrapper .li3 {
-    background-color: #ff8db3;
-    height: 300px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.task-wrapper .li4 {
-    background-color: #88e7ce;
-    height: 300px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.task-wrapper .flex-list {
+.band {
     display: flex;
     flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-.task-wrapper .flex-list li {
-    flex: auto;
-    width: 25%;
+.card {
+    margin: 1rem;
+    display: flex;
 }
 
-.task-wrapper .flex-list li p.text-contents {
-    background-color: rgb(36, 34, 34);
-    /* Fallback color */
-    background-color: rgba(15, 15, 15, 0.4);
-    /* Black w/opacity/see-through */
-    width: 50%;
-    display: inline-block;
-    margin: 120px auto;
-    text-align: center;
-    font-size: 15px;
-    color: #2a292b;
-    text-align: center;
-    color: #ce3645;
-    font-size: 40px;
-    font-weight: bolder;
-    border-radius: 10px;
-    z-index: 2;
+.card:hover {
+    top: -2px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+}
+
+.card article {
+    padding: 20px;
+}
+
+.card .thumb {
+    padding-bottom: 60%;
+    background-size: cover;
+    background-position: center center;
+}
+
+.card a {
+    text-decoration: none;
+}
+
+
+/* typography */
+
+.card h1 {
+    font-size: 20px;
+    margin: 0;
+    color: #333;
+    text-decoration: none;
+}
+
+.card p {
+    line-height: 1.4;
+    text-decoration: none;
+}
+
+.card span {
+    font-size: 12px;
+    font-weight: bold;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin: 2em 0 0 0;
 }

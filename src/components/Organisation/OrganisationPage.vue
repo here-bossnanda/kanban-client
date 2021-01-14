@@ -9,26 +9,137 @@
             </div>
             <div class="card-body ">
             
-            <organisation-card :organisationsData="organisationsData"></organisation-card>
-                
+            <organisation-card 
+                :organisationsData="organisationsData"
+                :deleteOrganisation="deleteOrganisation"
+                :editOrganisation="editOrganisation"
+                :detailOrganisation="detailOrganisation"
+            ></organisation-card>
+
+            <organisation-modal 
+                v-if="showModalOrganisation"  
+                :showModalOrganisation.sync="showModalOrganisation"
+                :saveOrupdateOrganisation="saveOrupdateOrganisation"
+                :createOrganisation="createOrganisation">
+            </organisation-modal>            
+
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
 import OrganisationCard from './OrganisationCard.vue'
+import OrganisationModal from './OrganisationModal'
+
 export default {
     name: "OrganisationPage",
     data(){
         OrganisationCard
         return {
+            createOrganisation: {
+                id: '',
+                name: ''
+            },
             showModalOrganisation: false,
+            
         }
     },
-    props: ['organisationsData'],
+    props: ['organisationsData','fetchOrganisation','baseUrl','changePage','page','detailOrganisation'],
     components: {
-        OrganisationCard
+        OrganisationCard,
+        OrganisationModal
+    },
+    methods: {
+        saveOrupdateOrganisation(id) {
+            let method, url;
+            if (!id) {
+                method = 'POST'
+                url = `${this.baseUrl}/organisations`
+            } else {
+                method = 'PUT'
+                url = `${this.baseUrl}/organisations/${id}`
+            }
+
+            axios({
+                method,
+                url,
+                data: {
+                    name: this.createOrganisation.name
+                },
+                headers: {
+                    access_token: localStorage.access_token
+                }
+            }).then(({ data }) => {
+                this.changePage('organisation');
+                this.fetchOrganisation();
+                this.showModalOrganisation = false;
+                this.createOrganisation.name = '';
+                this.createOrganisation.id = '';
+                if (method === 'POST') {
+                    toastr.success('successfully add new organisation', 'Success Alert');
+                } else {
+                    toastr.success('updated organisation successfully', 'Success Alert');
+                }
+            }).catch(({ response }) => {
+                if (response.data.length > 0) {
+                    response.data.message.map(el => {
+                        return toastr.warning(el, 'Warning Alert!');
+                    })
+                } else {
+                    toastr.error(response.data.message, 'Error Alert!');
+                    this.showModalOrganisation = false;
+                    this.createOrganisation.name = '';
+                    this.createOrganisation.id = '';
+                }
+            })
+        },
+        editOrganisation(id) {
+            axios({
+                method: 'GET',
+                url: `${this.baseUrl}/organisations/${id}`,
+                headers: {
+                    access_token: localStorage.access_token
+                }
+            }).then(({ data }) => {
+                this.createOrganisation.id = data.data.id
+                this.createOrganisation.name = data.data.name
+                this.showModalOrganisation = true;
+            }).catch(({ response }) => {
+                toastr.warning(response.data.message, 'Warning Alert!');
+            })
+        },
+        deleteOrganisation(id){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    axios({
+                        method: 'DELETE',
+                        url: `${this.baseUrl}/organisations/${id}`,
+                        headers: {
+                            access_token: localStorage.access_token
+                        }
+                    }).then(({ data }) => {
+                        this.changePage('organisation');
+                        this.fetchOrganisation();
+                        toastr.success(data.message, 'Success Alert!');
+                    }).catch(({ response }) => {
+                        toastr.error(response.data.message, 'Error Alert!');
+                    })
+                }
+            })
+        }
+        
+    },
+    computed: {
     }
 }
 </script>

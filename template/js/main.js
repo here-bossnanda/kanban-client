@@ -326,16 +326,16 @@ const app = new Vue({
         this.checkAuth()
     },
     computed: {
-        backlog() {
+        backlogs() {
             return this.detailOrganisationsData.task.filter(el => el.category.name === "backlog");
         },
-        todo() {
+        todos() {
             return this.detailOrganisationsData.task.filter(el => el.category.name === "todo");
         },
-        doing() {
+        doings() {
             return this.detailOrganisationsData.task.filter(el => el.category.name === "doing");
         },
-        done() {
+        dones() {
             return this.detailOrganisationsData.task.filter(el => el.category.name === "done");
         }
     }

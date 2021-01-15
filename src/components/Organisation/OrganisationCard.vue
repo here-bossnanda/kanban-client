@@ -13,9 +13,10 @@
                     </article>
                 </a>
                 <div class="row">
-                    <div class="btn-group" role="group" aria-label="Basic example" style="margin: 10px 50px;">
+                    <div class="btn-group" role="group" aria-label="Basic example" style="margin: 10px 48px;">
                         <button type="button" @click="editOrganisation(data.id)" class="btn btn-sm btn-warning"><i class="fa fa-pencil-alt"></i> Edit</button>
                         <button type="button" @click="deleteOrganisation(data.id)" style="margin-left: 5px;" class="btn btn-sm btn-danger"><i class="fa fa-trash-alt"></i> Delete</button>
+                        <button type="button" @click="member(data.id)" style="margin-left: 5px;" class="btn btn-sm btn-info"><i class="fa fa-user-alt"></i> Member</button>
                     </div>
                 </div>
             </div>
@@ -26,10 +27,13 @@
 <script>
 export default {
     name: "OrganisationCard",
-    props: ["organisationsData",'deleteOrganisation','editOrganisation','detailOrganisation'],
+    props: ["organisationsData",'deleteOrganisation','editOrganisation','detailOrganisation','memberOrganisation'],
     methods: {
         detail(id){
             this.detailOrganisation(id)
+        },
+        member(id){
+            this.memberOrganisation(id)
         }
     }
 }

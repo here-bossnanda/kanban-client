@@ -8,24 +8,27 @@
             </div>
             
             <div class="container-task">
+                <div class="card-task-flex">
                 <card-category
-                :backlogs="backlogs"
-                :todos="todos"
-                :doings="doings"
-                :dones="dones"
-                :showModalTask.sync="showModalTask"
-                :detailIdTaskAdd.sync="detailIdTaskAdd"
-                :editTask="editTask"
-                :destroyTask="destroyTask"
-                :updateCategory="updateCategory"
-                ></card-category>
+                    v-for="category in detailOrganisationsData"
+                    :key="category.id"
+                    :categoryId="category.id"
+                    :taskCategory="category.task"
+                    :nameTask="category.name"
+                    :showModalTask.sync="showModalTask"
+                    :detailIdTaskAdd.sync="detailIdTaskAdd"
+                    :editTask="editTask"
+                    :destroyTask="destroyTask"
+                    :updateCategory="updateCategory"
+                    ></card-category>
+                </div>
             </div>
 
             <modal-task 
-            v-if="showModalTask"
-            :saveOrupdateTask="saveOrupdateTask"
-            :createTaskModel="createTaskModel"
-            :showModalTask.sync="showModalTask"
+                v-if="showModalTask"
+                :saveOrupdateTask="saveOrupdateTask"
+                :createTaskModel="createTaskModel"
+                :showModalTask.sync="showModalTask"
             ></modal-task>
 
         </div>
@@ -47,7 +50,7 @@ export default {
             detailIdTaskAdd: 0
         }
     },
-    props: ['backlogs','todos','doings','dones','baseUrl','taskDetailTitle','taskDetailOwner','detailOrganisation','detailIdOrganisation'],
+    props: ['baseUrl','taskDetailTitle','taskDetailOwner','detailOrganisation','detailIdOrganisation','detailOrganisationsData'],
     components: { 
         CardCategory,
         ModalTask
@@ -92,17 +95,9 @@ export default {
                     toastr.success('updated task successfully', 'Success Alert');
                 }
             }).catch(({ response }) => {
-                if (response.data.length > 0) {
                     response.data.message.map(el => {
                         return toastr.warning(el, 'Warning Alert!');
                     })
-                } else {
-                    toastr.error(response.data.message, 'Error Alert!');
-                    this.showModalTask = false;
-                    this.createTaskModel.name = ''
-                    this.createTaskModel.id = ''
-                    this.createTaskModel.description = ''
-                }
             })
         },
         editTask(id) {
@@ -140,7 +135,11 @@ export default {
                         }
                     }).then(({ data }) => {
                         this.detailOrganisation(this.detailIdOrganisation)
-                        toastr.success(data.message, 'Success Alert!');
+                        Swal.fire(
+                        'Deleted!',
+                        `${data.message}`,
+                        'success'
+                        )
                     }).catch(({ response }) => {
                         toastr.error(response.data.message, 'Error Alert!');
                     })

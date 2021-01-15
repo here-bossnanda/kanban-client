@@ -1,28 +1,30 @@
 <template>
-    <div class="container task-wrapper" id="task-section">
-        <div class="heading">
-            <h2>Organisation</h2>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <a type="button" class="btn  btn-info float-right" @click="showModalOrganisation = true" href="javascript:void(0)"> <i class="fa fa-plus"></i> Add </a>
+    <div class="task-wrapper" id="task-section">
+        <div class="container ">
+            <div class="heading">
+                <h2>Organisation</h2>
             </div>
-            <div class="card-body ">
-            
-            <organisation-card 
-                :organisationsData="organisationsData"
-                :deleteOrganisation="deleteOrganisation"
-                :editOrganisation="editOrganisation"
-                :detailOrganisation="detailOrganisation"
-            ></organisation-card>
+            <div class="card">
+                <div class="card-header">
+                    <a type="button" class="btn  btn-info float-right" @click="showModalOrganisation = true" href="javascript:void(0)"> <i class="fa fa-plus"></i> Add </a>
+                </div>
+                <div class="card-body ">
+                
+                <organisation-card 
+                    :organisationsData="organisationsData"
+                    :deleteOrganisation="deleteOrganisation"
+                    :editOrganisation="editOrganisation"
+                    :detailOrganisation="detailOrganisation"
+                    :memberOrganisation="memberOrganisation"
+                ></organisation-card>
 
-            <organisation-modal 
-                v-if="showModalOrganisation"  
-                :showModalOrganisation.sync="showModalOrganisation"
-                :saveOrupdateOrganisation="saveOrupdateOrganisation"
-                :createOrganisation="createOrganisation">
-            </organisation-modal>            
-
+                <organisation-modal 
+                    v-if="showModalOrganisation"  
+                    :showModalOrganisation.sync="showModalOrganisation"
+                    :saveOrupdateOrganisation="saveOrupdateOrganisation"
+                    :createOrganisation="createOrganisation">
+                </organisation-modal>            
+                </div>
             </div>
         </div>
     </div>
@@ -36,7 +38,6 @@ import OrganisationModal from './OrganisationModal'
 export default {
     name: "OrganisationPage",
     data(){
-        OrganisationCard
         return {
             createOrganisation: {
                 id: '',
@@ -46,7 +47,7 @@ export default {
             
         }
     },
-    props: ['organisationsData','fetchOrganisation','baseUrl','changePage','page','detailOrganisation'],
+    props: ['organisationsData','fetchOrganisation','baseUrl','changePage','page','detailOrganisation','memberOrganisation'],
     components: {
         OrganisationCard,
         OrganisationModal
@@ -83,16 +84,9 @@ export default {
                     toastr.success('updated organisation successfully', 'Success Alert');
                 }
             }).catch(({ response }) => {
-                if (response.data.length > 0) {
                     response.data.message.map(el => {
                         return toastr.warning(el, 'Warning Alert!');
                     })
-                } else {
-                    toastr.error(response.data.message, 'Error Alert!');
-                    this.showModalOrganisation = false;
-                    this.createOrganisation.name = '';
-                    this.createOrganisation.id = '';
-                }
             })
         },
         editOrganisation(id) {
@@ -130,9 +124,17 @@ export default {
                     }).then(({ data }) => {
                         this.changePage('organisation');
                         this.fetchOrganisation();
-                        toastr.success(data.message, 'Success Alert!');
+                        Swal.fire(
+                        'Deleted!',
+                        `${data.message}`,
+                        'success'
+                        )
                     }).catch(({ response }) => {
-                        toastr.error(response.data.message, 'Error Alert!');
+                        Swal.fire(
+                        'Error!',
+                        `${response.data.message}`,
+                        'error'
+                        )
                     })
                 }
             })

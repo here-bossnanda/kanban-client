@@ -15,7 +15,7 @@
         <div class="social-media">
             <a href="#" class="social-icon"> <i class="fab fa-facebook-f"></i> </a>
             <a href="#" class="social-icon"> <i class="fab fa-twitter"></i> </a>
-            <a href="#" class="social-icon" id="google-signin-button"> <i class="fab fa-google"></i> </a>
+            <a href="#" class="social-icon" @click.prevent="onSignIn"> <i class="fab fa-google"></i> </a>
             <a href="#" class="social-icon"> <i class="fab fa-linkedin-in"></i> </a>
         </div>
     </form>
@@ -34,12 +34,7 @@ export default {
             }
         }
     },
-    mounted() {
-    gapi.signin2.render('google-signin-button', {
-        onsuccess: this.onSignIn
-        })
-    },
-    props: ['baseUrl','checkAuth'],
+    props: ['baseUrl','checkAuth','onSignIn'],
     methods: {
         login() {
             axios({
@@ -55,15 +50,17 @@ export default {
                     this.user.email = '';
                     this.user.password = '';
                     this.checkAuth();
+                    Swal.fire(
+                        'Login successfully!',
+                        `Welcome to kanban app ${localStorage.fullname}`,
+                        'success'
+                )
                 })
                 .catch(({ response }) => {
                     this.user.email = '';
                     this.user.password = '';
                     toastr.error(response.data.message, 'Error Alert!');
                 })
-        },
-        onSignIn (user) {
-            const profile = user.getBasicProfile()
         }
     }
     

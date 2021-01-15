@@ -1,29 +1,31 @@
 {
-  "name": "kanban-client",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/here-bossnanda/kanban-client.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/here-bossnanda/kanban-client/issues"
-  },
-  "homepage": "https://github.com/here-bossnanda/kanban-client#readme",
-  "dependencies": {
-    "axios": "^0.21.1",
-    "vue": "^2.6.12",
-    "vue-hot-reload-api": "^2.3.4"
-  },
-  "devDependencies": {
-    "@vue/component-compiler-utils": "^3.2.0",
-    "vue-template-compiler": "^2.6.12"
-  }
+    "name": "kanban-client",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/here-bossnanda/kanban-client.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/here-bossnanda/kanban-client/issues"
+    },
+    "homepage": "https://github.com/here-bossnanda/kanban-client#readme",
+    "dependencies": {
+        "axios": "^0.21.1",
+        "vue": "^2.6.12",
+        "vue-google-oauth2": "^1.5.5",
+        "vue-hot-reload-api": "^2.3.4",
+        "vue-select": "^3.11.2"
+    },
+    "devDependencies": {
+        "@vue/component-compiler-utils": "^3.2.0",
+        "vue-template-compiler": "^2.6.12"
+    }
 }

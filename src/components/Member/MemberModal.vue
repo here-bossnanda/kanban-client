@@ -14,7 +14,7 @@
                                 <div class="modal-body">
                                     <form>
                                         <div class="input-field">
-                                            <i class="fas fa-school"></i>
+                                            <i class="fas fa-pencil-alt"></i>
                                             <select v-model="listenId" @change="changeVal(listenId)">
                                                 <option v-for="member in members"
                                                 :key="member.id"

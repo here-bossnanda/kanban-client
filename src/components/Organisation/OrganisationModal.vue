@@ -15,7 +15,7 @@
                                     <form>
                                         <input v-model="createOrganisation.id" type="text" style="display: none;">
                                         <div class="input-field">
-                                            <i class="fas fa-school"></i>
+                                            <i class="fas fa-fa-pencil-alt"></i>
                                             <input v-model="createOrganisation.name" type="text" placeholder="Name">
                                         </div>
                                     </form>

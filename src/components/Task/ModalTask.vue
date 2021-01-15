@@ -15,11 +15,11 @@
                             <form>
                                 <input v-model="createTaskModel.id" type="text" style="display: none;">
                                 <div class="input-field">
-                                    <i class="fas fa-school"></i>
+                                    <i class="fas fa-pencil-alt"></i>
                                     <input v-model="createTaskModel.name" type="text" placeholder="Name">
                                 </div>
                                 <div class="input-field">
-                                    <i class="fas fa-school"></i>
+                                    <i class="fas fa-pencil-alt"></i>
                                     <input v-model="createTaskModel.description" type="text" placeholder="Description">
                                 </div>
                             </form>

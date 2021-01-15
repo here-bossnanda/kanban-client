@@ -72,7 +72,7 @@
       return {
         message: 'hello world',
         page: 'login',
-        baseUrl: 'http://localhost:3000',
+        baseUrl: 'https://kanban-hactiv8.herokuapp.com',
         welcomeName: '',
         organisationsData: [],
         detailOrganisationsData : [],

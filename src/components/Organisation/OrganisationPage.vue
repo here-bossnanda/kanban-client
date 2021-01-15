@@ -97,8 +97,9 @@ export default {
                     access_token: localStorage.access_token
                 }
             }).then(({ data }) => {
-                this.createOrganisation.id = data.data.id
-                this.createOrganisation.name = data.data.name
+                console.log(data);
+                this.createOrganisation.id = data.data.organisation.id
+                this.createOrganisation.name = data.data.organisation.name
                 this.showModalOrganisation = true;
             }).catch(({ response }) => {
                 toastr.warning(response.data.message, 'Warning Alert!');
